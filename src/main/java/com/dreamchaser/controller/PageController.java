@@ -176,7 +176,7 @@ public class PageController {
             map.replace("begin",0);
         }
         if (map.get("size")==null){
-            map.put("size",7);
+            map.put("size",8);
         }
 
         //所有博客分页查询
@@ -195,6 +195,7 @@ public class PageController {
         map.put("isRecommend",1);
         mv.addObject("recommendedBlogs",blogService.findBlogByConditionVisible(map));
 
+        //为了显示博客数量
         List<Blog>blogs=blogService.findBlogAllVisible();
         mv.addObject("number",blogs.size());
 
@@ -238,6 +239,9 @@ public class PageController {
             map.put("size",6);
         }
         mv.setViewName("tags");
+
+        //加上","才能保证查找的tagId准确，否则会出现找的明明是9，结果显示是19
+        map.put("tags",","+String.valueOf(map.get("tags"))+",");
         mv.addObject("blogs",blogCombinationService.findBlogCombinationByConditionVisible(MapUtil.handle(map)));
         mv.addObject("begin",map.get("begin"));
         mv.addObject("size",map.get("size"));
